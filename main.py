@@ -3,7 +3,13 @@ import time
 class terminator():
     def __init__(self, color=[-1,-1,-1]):
         self.color = color
-
+    
+    def print(self, text):
+        print(text, end="")
+    
+    def printls(self, text):
+        print(text)
+    
     def cprint(self, text, color):
         print(f"\033[38;2;{color[0]};{color[1]};{color[2]}m{str(text)}\x1b[0m", end="")
 
@@ -23,11 +29,3 @@ class terminator():
                 for i in range(space - len(element)):
                     self.cprint(" ", color=self.color)
             print("")
-
-a = [
-    ["foo1", "bar1", "cao11123", "mum1324"],
-    ["foo1asdf", "barqewr", "caoqw", "mumdh"],
-    ["foosda", "barfs", "caosdas", "mumgfd"]
-]
-term = terminator(color=[100,100,100])
-term.aprint("fuck my family")
