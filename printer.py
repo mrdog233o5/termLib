@@ -1,7 +1,7 @@
 import time
 import sys
 import os
-class terminal():
+class printer():
     def __init__(self, color=[-1,-1,-1]):
         self.color = color
     def print(self, text):
