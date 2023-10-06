@@ -1,28 +1,12 @@
 import time
 
-def rgbToAnsi(r, g, b):
-    if r == g == b:
-        if r < 8:
-            return 16
-        if r > 248:
-            return 231
-        return round(((r - 8) / 247) * 24) + 232
-
-    ansi_r = 36 * round(r / 255 * 5)
-    ansi_g = 6 * round(g / 255 * 5)
-    ansi_b = round(b / 255 * 5)
-
-    return 16 + ansi_r + ansi_g + ansi_b
-
 class terminator():
     def __init__(self, color=[-1,-1,-1]):
-        self.color = rgbToAnsi(color[0], color[1], color[2])
-    def cprint(self, text, color=16):
-        if color == 16:
-            print(text, end="")
-            return
-        print(f"\033[38;5;{color}m{text}\033[0m")
-    def cprintln(self):
+        self.color = color
+
+    def cprint(self, text, color):
+        print(f"\033[38;2;{color[0]};{color[1]};{color[2]}m{str(text)}\x1b[0m", end="")
+
     def aprint(self, message, WaitTime=0.02):
         for i in message:
             self.cprint(i, color=self.color)
@@ -38,12 +22,12 @@ class terminator():
                 self.cprint(element, color=self.color)
                 for i in range(space - len(element)):
                     self.cprint(" ", color=self.color)
-            self.cprint(" ", color=self.color)
+            print("")
 
 a = [
     ["foo1", "bar1", "cao11123", "mum1324"],
     ["foo1asdf", "barqewr", "caoqw", "mumdh"],
     ["foosda", "barfs", "caosdas", "mumgfd"]
 ]
-term = terminator()
-term.printGrid(a, space=20, revert=True)
+term = terminator(color=[100,100,100])
+term.aprint("fuck my family")
