@@ -1,16 +1,8 @@
 import time
 import sys
 import os
-
-class ansiConverter:
-    def __init__(self):
-        self.RESET = "\33[0m]"
-        self.RESET = self.RESET.rstrip(self.RESET[-1])
-
-    def rgb_ansi(self, text, rgb=[255,255,255]):
-        r,g,b = rgb[0],rgb[1],rgb[2]
-        ret = f"\033[38;2;{r};{g};{b}m{str(text)}]"
-        return ret.rstrip(ret[-1])
+from typing import List
+from ansiConvert import *
 
 class printer:
     def __init__(self, color=[-1,-1,-1]):
@@ -18,13 +10,19 @@ class printer:
 
     def cprint(self, msg, color):
         tempClass = ansiConverter()
-        print(tempClass.rgb_ansi(msg, rgb=color), end="")
+        print(tempClass.ansiText(msg, rgb=color), end="")
+
+    def bprint(self, color):
+        tempClass = ansiConverter()
+        print(tempClass.ansiBlock(rgb=color), end="")
+        print(tempClass.ansiBlock(rgb=color), end="")
 
     def aprint(self, message, WaitTime=0.015, end="\n"):
         for i in message:
             self.cprint(i, color=self.color)
             time.sleep(WaitTime)
         print(end, end="")
+
     def printgrid(self, grid, space=10, revert=False):
         if revert:
             grid = list(zip(*grid[::-1]))
@@ -33,7 +31,7 @@ class printer:
         for row in grid:
             for element in row:
                 self.cprint(element, color=self.color)
-                for i in range(space - len(element)):
+                for i in range(space - len(str(element))):
                     self.cprint(" ", color=self.color)
             print("")
 
@@ -45,5 +43,36 @@ class printer:
     def clean(self):
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    def bList(self, grid, keys, revert=False):
+        if revert:
+            grid = list(zip(*grid[::-1]))
+            for i in range(len(grid)):
+                grid[i] = list(reversed(grid[i]))
+        for row in grid:
+            for element in row:
+                self.bprint(keys[element])
+            print("")
+
+    def bText(self, text:str, keys, revert = False):
+        rows = text.split(sep="\n")
+        del rows[0]
+        del rows[-1]
+        grid = []
+        for i in rows:
+            grid.append(list(i))
+        if revert:
+            grid = list(zip(*grid[::-1]))
+            for i in range(len(grid)):
+                grid[i] = list(reversed(grid[i]))
+        for row in grid:
+            for element in row:
+                self.bprint(keys[element])
+            print("")
+
+key = {"r":(255,0,0), "g":(0,255,0), "b":(0,0,255), "w":(255,255,255)}
 a = printer((17, 196, 17))
-a.aprint("asdkfuhqweoaidskljfhoiqukljehasdflkujhqwef2891ui3oweqd")
+a.bText('''
+rgb
+rgb
+rgb
+''', key)
