@@ -36,7 +36,7 @@ class printer:
             time.sleep(WaitTime)
         print(end, end="")
 
-    def printgrid(self, grid, space=10, revert=False):
+    def cprintgrid(self, grid, space=10, revert=False):
         if revert:
             grid = list(zip(*grid[::-1]))
             for i in range(len(grid)):
@@ -46,6 +46,18 @@ class printer:
                 self.cprint(element, color=self.color)
                 for i in range(space - len(str(element))):
                     self.cprint(" ", color=self.color)
+            print("")
+
+    def printgrid(self, grid, space=10, revert=False):
+        if revert:
+            grid = list(zip(*grid[::-1]))
+            for i in range(len(grid)):
+                grid[i] = list(reversed(grid[i]))
+        for row in grid:
+            for element in row:
+                print(element, end="")
+                for i in range(space - len(str(element))):
+                    print(" ", end="")
             print("")
 
     def cleanln(self):
